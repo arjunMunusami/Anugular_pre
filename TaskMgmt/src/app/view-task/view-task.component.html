@@ -1,4 +1,108 @@
-<div id="ViewTask" class="tabcontent">
-    <h3>Paris</h3>
-    <p>Paris is the capital of France.</p>
-  </div>
+
+<div class="viewSearch">
+    <fieldset>
+        <form name="book">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <div class="row rowSpace">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        Title
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <input type="text" name="title" required  >
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            Price
+                        </div>
+                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                            <input type="number" name="price" required  >
+                    </div>
+                </div>
+                <div class="row rowSpace">
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        Title
+                        </div>
+                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <input type="text" name="title" required  >
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            Price
+                        </div>
+                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                            <input type="number" name="price" required  >
+                        </div>
+                    </div>
+                    <div class="row rowSpace">
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            Title
+                            </div>
+                            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                            <input type="text" name="title" required  >
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                Price
+                            </div>
+                            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                <input type="number" name="price" required  >
+                            </div>
+                        </div>
+                
+                <div class="row rowSpace">
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        &nbsp;
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                    <button (click)="saveBookData()" > Submit </button>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                <input type="button" value="Reset" onclick="reset()"/>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+            </form>
+    </fieldset>
+</div>
+<div css="viewResults">
+    <mat-table [dataSource]="dataSource" matSort>
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+        </ng-container>
+    
+        <!-- Progress Column -->
+        <ng-container matColumnDef="progress">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Progress </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.progress}}% </mat-cell>
+        </ng-container>
+    
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+        </ng-container>
+    
+        <!-- Color Column -->
+        <ng-container matColumnDef="color">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Color </mat-header-cell>
+            <mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.color}} </mat-cell>
+        </ng-container>
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;">
+        </mat-row>
+     </mat-table>
+    
+     <mat-paginator [length]="100"
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 10, 25, 100]">
+    </mat-paginator>
+     
+
+</div>

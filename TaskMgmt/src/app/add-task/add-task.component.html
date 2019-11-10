@@ -1,22 +1,25 @@
 <!-- Tab content -->
 <div id="addTask" class="tabcontent">
-    <form action="/action_page.php">
+
+   <form [formGroup]="taskForm" (ngSubmit)="addTaskDetail()">
       <label for="tName">Task Name</label>
-      <input type="text" id="tName" name="taskName" placeholder="Enter task name...">
+      <input type="text" id="tName" name="taskName" formControlName="taskName" placeholder="Enter task name...">
   
       <label for="priority">Priority</label>
-      <input type="text" id="priority" name="lastname" placeholder="Enter task priority..">
-  
+      <mat-slider min="1" max="20" step="1" value="4" formControlName="taskPriority"></mat-slider> <br/>
+        
       <label for="pTaskName">Parent Task</label>
-      <input type="text" id="pTaskName" name="lastname" placeholder="Enter parent task...">
+      <input type="text" id="pTaskName" name="lastname" formControlName="taskParent" placeholder="Enter parent task...">
   
+      
       <label for="startDate">Start Date</label>
-      <input type="text" id="priority" name="lastname" placeholder="Your Start date..">
+      <input type="text" id="startDate" name="lastname" formControlName="taskStartDt" placeholder="Your Start date..">
+        
   
       <label for="endDate">End Date</label>
-      <input type="text" id="priority" name="lastname" placeholder="Your End date...">
+      <input type="text" id="endDate" name="lastname" formControlName="taskEndDt" placeholder="Your End date...">
     
-      <input type="button" value="Submit">
-      <input type="button" value="Reset">
+      <input type="submit" value="Submit">
+      <input type="button" value="Reset" (click)="resetTaskForm()">
     </form>
   </div>
