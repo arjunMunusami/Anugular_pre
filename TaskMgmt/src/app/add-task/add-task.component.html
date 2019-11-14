@@ -6,39 +6,39 @@
                 <div class="form-group row">
                   <div class="col-sm-6">
                       <label for="tName">Task Name</label>
-                      <input type="text" class="form-control" id="tName" formControlName="taskName" placeholder="Enter task name...">
+                      <input type="text" required class="form-control" id="tName" formControlName="taskName" placeholder="Enter task name...">
                   </div>                          
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6">
                       <label for="tPriority">Task Priority</label> <Br/>
-                      <mat-slider id="tPriority"  min="1" max="20" step="1" value="4" formControlName="taskPriority"></mat-slider>
+                      <mat-slider id="tPriority" required  min="1" max="20" step="1" value="4" formControlName="taskPriority"></mat-slider>
                   </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-6">
                         <label for="pTaskName">Parent Task</label>
-                        <input type="text" id="pTaskName" class="form-control" formControlName="taskParent" placeholder="Enter parent task...">
+                        <input type="text" required id="pTaskName" class="form-control" formControlName="taskParent" placeholder="Enter parent task...">
                     </div>                          
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-6">
                         <label for="formDate">From Date</label>
-                        <input type="date" id="formDate" class="form-control" formControlName="taskStartDt" placeholder="Your Start date...">
+                        <input type="date" required id="formDate" class="form-control" formControlName="taskStartDt" placeholder="Your Start date...">
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-6">
                         <label for="toDate">To Date</label>
-                        <input type="date" id="toDate" class="form-control" formControlName="taskEndDt" placeholder="Your Start date...">
+                        <input type="date" required id="toDate" class="form-control" formControlName="taskEndDt" placeholder="Your Start date...">
                     </div>                        
                 </div>  
                 <div class="form-group row">
                     <div class="col-sm-3">
-                        <button type="button" class="btn btn-primary px-4 float-right">Save</button>
+                        <button type="button" class="btn btn-primary px-4 float-right" (click)="addTaskDetail()">Save</button>
                     </div> 
                     <div class="col-sm-3">
-                        <button type="button" class="btn btn-primary px-4 float-right">Reset</button>
+                        <button type="button" class="btn btn-primary px-4 float-right" (click)="resetTaskForm()">Reset</button>
                     </div>                        
                 </div>             
                                

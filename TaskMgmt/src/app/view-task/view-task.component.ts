@@ -8,7 +8,7 @@ import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 })
 export class ViewTaskComponent implements OnInit {
 
-  displayedColumns = ['id', 'name', 'progress', 'color'];
+  displayedColumns = ['id', 'name', 'progress', 'color','Actions'];
   dataSource: MatTableDataSource<UserData>;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;

@@ -5,31 +5,31 @@
                 <div class="form-group row">
                         <div class="col-sm-6">
                             <label for="inputFirstname">Task Name</label>
-                            <input type="text" class="form-control" id="inputFirstname" placeholder="First name">
+                            <input type="text" class="form-control" id="inputFirstname" placeholder="Task name">
                         </div>
                         <div class="col-sm-6">
                             <label for="inputLastname">Parent Task</label>
-                            <input type="text" class="form-control" id="inputLastname" placeholder="Last name">
+                            <input type="text" class="form-control" id="inputLastname" placeholder="Parent Task name">
                         </div>
                 </div>
                 <div class="form-group row">
                         <div class="col-sm-6">
                             <label for="inputAddressLine1">Priority From</label>
-                            <input type="text" class="form-control" id="inputAddressLine1" placeholder="Street Address">
+                            <input type="text" class="form-control" id="inputAddressLine1" placeholder="Priority From">
                         </div>
                         <div class="col-sm-6">
                             <label for="inputAddressLine2">Priority To</label>
-                            <input type="text" class="form-control" id="inputAddressLine2" placeholder="Line 2">
+                            <input type="text" class="form-control" id="inputAddressLine2" placeholder="Priority To">
                         </div>
                 </div>
                 <div class="form-group row">
                         <div class="col-sm-6">
                             <label for="inputCity">From Date</label>
-                            <input type="text" class="form-control" id="inputCity" placeholder="City">
+                            <input type="text" class="form-control" id="inputCity" placeholder="From Date">
                         </div>
                         <div class="col-sm-6">
                             <label for="inputState">To Date</label>
-                            <input type="text" class="form-control" id="inputState" placeholder="State">
+                            <input type="text" class="form-control" id="inputState" placeholder="To Date">
                         </div>                        
                 </div>                
                 <button type="button" class="btn btn-primary px-4 float-right">Save</button>
@@ -62,6 +62,15 @@
         <ng-container matColumnDef="color">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Color </mat-header-cell>
             <mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.color}} </mat-cell>
+        </ng-container>
+
+        <!-- Color Column -->
+        <ng-container matColumnDef="Actions">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Actions </mat-header-cell>
+            <mat-cell *matCellDef="let row" [style.color]="row.color"> 
+                <a routerLinkActive="active" routerLink="/editTask/{{row.id}}">Edit Task</a>
+                <a routerLinkActive="active" routerLink="/endTask/{{row.id}}">End Task</a>                            
+            </mat-cell>
         </ng-container>
     
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
