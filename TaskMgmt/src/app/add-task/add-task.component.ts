@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms'
+import {TskMgmServiceService} from '../service/tsk-mgm-service.service'
+import {TaskDetail} from '../model/TaskDetailVO';
 
 @Component({
   selector: 'app-add-task',
@@ -8,7 +10,7 @@ import {FormGroup, FormControl, Validators} from '@angular/forms'
 })
 export class AddTaskComponent implements OnInit {
 
-  constructor() { }
+  constructor(private tskMgmtService:TskMgmServiceService) { }
 
   taskForm = new FormGroup({
     taskId: new FormControl(''),
@@ -32,6 +34,23 @@ export class AddTaskComponent implements OnInit {
 
   addTaskDetail() {
     console.log(this.taskForm.value);
+    let taskDetail = new TaskDetail();
+   
+    taskDetail.taskName = this.taskForm.get("taskName").value;
+    taskDetail.taskPriority = this.taskForm.get("taskPriority").value;
+    taskDetail.taskStartDt = this.taskForm.get("taskStartDt").value;
+    taskDetail.taskEndDt = this.taskForm.get("taskEndDt").value;
+    if(this.taskForm.get("taskParent").value!='') {
+      let parentTaskDetail = new TaskDetail();
+      parentTaskDetail.taskName = this.taskForm.get("taskParent").value;
+      taskDetail.parentTask = parentTaskDetail;
+    }
+
+    this.tskMgmtService.insertTaskDetail(taskDetail).subscribe(
+      (taskDetail)=>{console.log(taskDetail);},
+      (error)=>console.log(error)
+      );
+
   }
 
   resetTaskForm() {
