@@ -1,5 +1,11 @@
 import { Component, ViewChild,OnInit } from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import {FormGroup, FormControl, Validators} from '@angular/forms'
+import {TskMgmServiceService} from '../service/tsk-mgm-service.service'
+import {TaskSearch} from '../model/TaskSearchVO';
+import {TaskResult} from '../model/TaskResultVO';
+import {TaskDetail} from '../model/TaskDetailVO';
+import {ActivatedRoute, ParamMap} from "@angular/router";
 
 @Component({
   selector: 'app-view-task',
@@ -8,51 +14,85 @@ import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 })
 export class ViewTaskComponent implements OnInit {
 
-  displayedColumns = ['id', 'name', 'progress', 'color','Actions'];
-  dataSource: MatTableDataSource<UserData>;
+  displayedColumns = ['Task Name', 'Parent Task', 'Priority', 'Start Date','End Date','Actions'];
+  dataSource: MatTableDataSource<TaskDetail>;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor() {
-    // Create 100 users
-    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+  constructor(private tskMgmtService:TskMgmServiceService,private activatedRoute:ActivatedRoute) {
+    
   }
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.activatedRoute.queryParamMap.subscribe(params => { 
+      console.log(params.get('taskId'));
+      if(null!=params && params.get('taskId')!==undefined){
+        this.endTaskDetail(params.get('taskId'));
+      } 
+  });
+  }
+
+  taskSearchForm = new FormGroup({
+  
+    taskName: new FormControl('',[
+      Validators.required
+    ]),
+    parentTask: new FormControl(''),
+    taskPriorityFrom: new FormControl(''),
+    taskPriorityTo: new FormControl(''),
+    taskStartDt: new FormControl('',[
+      Validators.required,
+      Validators.pattern('^((0|1)\d{1})-((0|1|2)\d{1})-((19|20)\d{2})')
+    ]),
+    taskEndDt: new FormControl('',[
+      Validators.required,
+      Validators.pattern('^((0|1)\d{1})-((0|1|2)\d{1})-((19|20)\d{2})')
+    ])
+    
+  })
+
+  searchTaskDetails() {
+    console.log(this.taskSearchForm.value);
+    let taskDetail = new TaskSearch();
+   
+    taskDetail.taskName = this.taskSearchForm.get("taskName").value;
+    taskDetail.parentTask = this.taskSearchForm.get("parentTask").value;
+    taskDetail.taskPriorityFrom = this.taskSearchForm.get("taskPriorityFrom").value;
+    taskDetail.taskPriorityTo = this.taskSearchForm.get("taskPriorityTo").value;
+    taskDetail.taskStartDt = this.taskSearchForm.get("taskStartDt").value;
+    taskDetail.taskEndDt = this.taskSearchForm.get("taskEndDt").value;
+    
+
+    this.tskMgmtService.searchTask(taskDetail).subscribe(
+      (taskResult)=>{        
+        this.dataSource = new MatTableDataSource(taskResult.taskList);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      (error)=>console.log(error)
+      );
+
+  }
+
+  endTaskDetail(taskId:String){
+
+    console.log(this.taskSearchForm.value);
+
+    this.tskMgmtService.endTaskDetail(taskId).subscribe(
+      (taskResult:TaskResult)=>{
+        if(null==taskResult.errMsg || taskResult.errMsg==''){
+          this.searchTaskDetails();
+        }
+      },
+      (error)=>console.log(error)
+      );
+
+  }
+
+  clearTaskSearch() {
+    this.taskSearchForm.reset();
   }
 
  
-}
-
-/** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
-  const name =
-      NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-      NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-  return {
-    id: id.toString(),
-    name: name,
-    progress: Math.round(Math.random() * 100).toString(),
-    color: COLORS[Math.round(Math.random() * (COLORS.length - 1))]
-  };
-}
-
-/** Constants used to fill up our data base. */
-const COLORS = ['maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple',
-  'fuchsia', 'lime', 'teal', 'aqua', 'blue', 'navy', 'black', 'gray'];
-const NAMES = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
-  'Charlotte', 'Theodore', 'Isla', 'Oliver', 'Isabella', 'Jasper',
-  'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'];
-
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  color: string;
 }

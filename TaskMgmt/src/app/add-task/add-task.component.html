@@ -3,6 +3,8 @@
     <div class="row">
         <div class="col-md-10 mx-auto">
             <form [formGroup]="taskForm" (ngSubmit)="addTaskDetail()">
+                <input type="hidden" required class="form-control"  formControlName="taskId">
+                 
                 <div class="form-group row">
                   <div class="col-sm-6">
                       <label for="tName">Task Name</label>
@@ -12,7 +14,7 @@
                 <div class="form-group row">
                   <div class="col-sm-6">
                       <label for="tPriority">Task Priority</label> <Br/>
-                      <mat-slider id="tPriority" required  min="1" max="20" step="1" value="4" formControlName="taskPriority"></mat-slider>
+                      <mat-slider id="tPriority" required  min="1" max="20" step="1"  formControlName="taskPriority"></mat-slider>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -33,14 +35,27 @@
                         <input type="date" required id="toDate" class="form-control" formControlName="taskEndDt" placeholder="Your Start date...">
                     </div>                        
                 </div>  
-                <div class="form-group row">
-                    <div class="col-sm-3">
-                        <button type="button" class="btn btn-primary px-4 float-right" (click)="addTaskDetail()">Save</button>
-                    </div> 
-                    <div class="col-sm-3">
-                        <button type="button" class="btn btn-primary px-4 float-right" (click)="resetTaskForm()">Reset</button>
-                    </div>                        
-                </div>             
+
+                <div *ngIf="flow==='ADD'; then thenBlock else elseBlock"></div>
+                    <ng-template #thenBlock>
+                        <div class="form-group row">
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-primary px-4 float-right" (click)="addTaskDetail()">Save</button>
+                            </div> 
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-primary px-4 float-right" (click)="resetTaskForm()">Reset</button>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template #elseBlock>
+                        <div class="form-group row">
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-primary px-4 float-right" (click)="updateTaskDetail()">Update</button>
+                            </div>
+                        </div> 
+                    </ng-template>
+
+                          
                                
             </form>
         </div>

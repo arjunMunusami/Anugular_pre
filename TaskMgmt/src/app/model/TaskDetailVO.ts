@@ -8,5 +8,6 @@ export class TaskDetail {
     taskStartDt : Date;
     taskEndDt:Date;
     parentTask:TaskDetail;
+    status:String;
 
 }
