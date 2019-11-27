@@ -1,9 +1,11 @@
 <!-- Tab content -->
 <div class="viewSearch">
+     <div [ngStyle]="{'color':success!==false?'green':'red' }">{{message}}</div>
     <div class="row">
         <div class="col-md-10 mx-auto">
             <form [formGroup]="taskForm" (ngSubmit)="addTaskDetail()">
                 <input type="hidden" required class="form-control"  formControlName="taskId">
+                <input type="hidden" required class="form-control"  formControlName="status" value="INP">
                  
                 <div class="form-group row">
                   <div class="col-sm-6">

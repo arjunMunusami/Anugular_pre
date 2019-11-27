@@ -16,6 +16,12 @@ export class AddTaskComponent implements OnInit {
   taskForm: FormGroup;
 
   @Output()
+  success: boolean;
+
+  @Output()
+  message: String;
+
+  @Output()
   flow: String = "ADD";
 
   constructor(private activatedRoute:ActivatedRoute, private tskMgmtService:TskMgmServiceService,private datePipe: DatePipe) { }
@@ -36,7 +42,8 @@ export class AddTaskComponent implements OnInit {
         Validators.required,
         Validators.pattern('^((0|1)\d{1})-((0|1|2)\d{1})-((19|20)\d{2})')
       ]),
-      taskParent: new FormControl('')
+      taskParent: new FormControl(''),
+      status:new FormControl('')
     })
 
     this.activatedRoute.paramMap.subscribe(params => { 
@@ -44,10 +51,7 @@ export class AddTaskComponent implements OnInit {
       if(null!=params && params.get('taskId')!==undefined){
         this.editTaskDetail(params.get('taskId'));
       } 
-    });
-  
-   
- 
+    }); 
   }
 
  
@@ -60,6 +64,7 @@ export class AddTaskComponent implements OnInit {
     taskDetail.taskPriority = this.taskForm.get("taskPriority").value;
     taskDetail.taskStartDt = this.taskForm.get("taskStartDt").value;
     taskDetail.taskEndDt = this.taskForm.get("taskEndDt").value;
+    taskDetail.status = this.taskForm.get("status").value;
     if(this.taskForm.get("taskParent").value!='') {
       let parentTaskDetail = new TaskDetail();
       parentTaskDetail.taskName = this.taskForm.get("taskParent").value;
@@ -67,10 +72,17 @@ export class AddTaskComponent implements OnInit {
     }
 
     this.tskMgmtService.insertTaskDetail(taskDetail).subscribe(
-      (taskDetail)=>{console.log(taskDetail);},
-      (error)=>console.log(error)
-      );
-
+      (taskDetail)=>{
+        this.success=true;
+        this.message="Successfully saved the data!";
+        //console.log(taskDetail);
+      },
+      (error)=>{
+        this.success=false;
+        this.message=error;
+        //console.log(error);
+      }
+    );      
   }
 
   updateTaskDetail() {
@@ -82,6 +94,7 @@ export class AddTaskComponent implements OnInit {
     taskDetail.taskPriority = this.taskForm.get("taskPriority").value;
     taskDetail.taskStartDt = this.taskForm.get("taskStartDt").value;
     taskDetail.taskEndDt = this.taskForm.get("taskEndDt").value;
+    taskDetail.status = this.taskForm.get("status").value;
     if(this.taskForm.get("taskParent").value!='') {
       let parentTaskDetail = new TaskDetail();
       parentTaskDetail.taskName = this.taskForm.get("taskParent").value;
@@ -89,9 +102,17 @@ export class AddTaskComponent implements OnInit {
     }
 
     this.tskMgmtService.insertTaskDetail(taskDetail).subscribe(
-      (taskDetail)=>{console.log(taskDetail);},
-      (error)=>console.log(error)
-      );
+      (taskDetail)=>{
+        this.success=true;
+        this.message="Successfully updated the data!";
+        console.log(taskDetail);
+      },
+      (error)=>{
+        this.success=false;
+        this.message=error.message;
+        console.log(error);
+      }
+    );
 
   }
 
@@ -108,13 +129,15 @@ export class AddTaskComponent implements OnInit {
           this.taskForm.get("taskPriority").setValue(taskDetail.taskPriority);
           this.taskForm.get("taskStartDt").setValue(this.datePipe.transform(taskDetail.taskStartDt,'yyyy-MM-dd'));
           this.taskForm.get("taskEndDt").setValue(this.datePipe.transform(taskDetail.taskEndDt,'yyyy-MM-dd'));
-          this.taskForm.get("taskParent").setValue((null!=taskDetail.parentTask?taskDetail.parentTask:''));
+          this.taskForm.get("taskParent").setValue((null!=taskDetail.parentTask?taskDetail.parentTask.taskName:''));
           this.flow = "UPDATE";
          console.log(taskResult);
         }
       },
-      (error)=>console.log(error)
-      );
+      (error)=>{
+        console.log(error);
+      }
+    );
   }
 
   resetTaskForm() {

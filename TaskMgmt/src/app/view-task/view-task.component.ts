@@ -54,17 +54,17 @@ export class ViewTaskComponent implements OnInit {
 
   searchTaskDetails() {
     console.log(this.taskSearchForm.value);
-    let taskDetail = new TaskSearch();
+    let searchDetail = new TaskSearch();
    
-    taskDetail.taskName = this.taskSearchForm.get("taskName").value;
-    taskDetail.parentTask = this.taskSearchForm.get("parentTask").value;
-    taskDetail.taskPriorityFrom = this.taskSearchForm.get("taskPriorityFrom").value;
-    taskDetail.taskPriorityTo = this.taskSearchForm.get("taskPriorityTo").value;
-    taskDetail.taskStartDt = this.taskSearchForm.get("taskStartDt").value;
-    taskDetail.taskEndDt = this.taskSearchForm.get("taskEndDt").value;
+    searchDetail.taskName = this.taskSearchForm.get("taskName").value;
+    searchDetail.parentTask = this.taskSearchForm.get("parentTask").value;
+    searchDetail.taskPriorityFrom = this.taskSearchForm.get("taskPriorityFrom").value;
+    searchDetail.taskPriorityTo = this.taskSearchForm.get("taskPriorityTo").value;
+    searchDetail.taskStartDate = this.taskSearchForm.get("taskStartDt").value;
+    searchDetail.taskEndDate = this.taskSearchForm.get("taskEndDt").value;
     
 
-    this.tskMgmtService.searchTask(taskDetail).subscribe(
+    this.tskMgmtService.searchTask(searchDetail).subscribe(
       (taskResult)=>{        
         this.dataSource = new MatTableDataSource(taskResult.taskList);
         this.dataSource.paginator = this.paginator;
